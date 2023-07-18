@@ -17,10 +17,11 @@ class Main extends AbstractVerticle{
 //		def connection = DriverManager.getConnection("jdbc:h2:~/test;MODE=Mysql;DB_CLOSE_DELAY=-1", "sa",""); 
 		app.createDatabaseStructure(connection)
 		app.addDemoRecords(connection)
-		app.generateXML()
 		connection.close()
-		println("")
 
+//		println(app.generateXML())
+		
+		
 		
 	}
 	
@@ -140,7 +141,7 @@ INSERT INTO blog(title, users, post) VALUES (?, ?, ?)""",
 //println(xmlContent)
 //		return println(writer.toString())
 		sql.close()
-		return println(xmlContent.toString())
+		return xmlContent.toString()
 
 	}
 }
