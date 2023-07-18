@@ -24,4 +24,8 @@
         module=""
         status="integration">
 	</info>
+	<dependencies>
+		<dependency org="com.h2database" name="h2" rev="1.4.194"/>
+
+	</dependencies>
 </ivy-module>
