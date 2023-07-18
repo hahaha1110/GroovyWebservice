@@ -21,7 +21,8 @@ class Main extends AbstractVerticle{
 
 //		println(app.generateXML())
 		
-		
+		Vertx vertx = Vertx.vertx()
+		vertx.deployVerticle(new Main())
 		
 	}
 	
