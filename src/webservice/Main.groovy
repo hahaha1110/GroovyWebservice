@@ -4,9 +4,13 @@ import java.sql.DriverManager
 
 import groovy.sql.Sql
 import groovy.xml.MarkupBuilder
+import io.vertx.core.AbstractVerticle
+import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.core.http.HttpMethod
 
-
-class Main {
+class Main extends AbstractVerticle{
+	
 	static void main(String[] args) {
 		def app = new Main()
 		def connection = app.createDatabaseConnection()
@@ -20,6 +24,31 @@ class Main {
 		
 	}
 	
+	public void start(Future fut) { // Verticle을 성공적으로 초기화하고 시작했는지를 Vert.x에 알리기 위해 전달된 Future 객체를 사용
+		vertx
+			.createHttpServer()
+			.requestHandler() { request ->
+				if(request.path() == "/blogs/" && request.method() == HttpMethod.GET) {
+					request
+					.response()
+					.putHeader("content-type", "application/xml")
+					.end(generateXML().toString())
+				}else {
+					request
+					.response()
+					.setStatusCode(404)
+					.end("Error 404")
+				}
+			}
+			.listen(8080) { result -> 
+				if(result.succeeded()) {
+					fut.complete()
+				}else {
+					fut.fail(result.cause())
+				}
+			}
+	}
+	
 	def createDatabaseConnection() {
 		def connection = DriverManager.getConnection("jdbc:h2:~/test;MODE=Mysql;DB_CLOSE_DELAY=-1", "sa",""); 
 		return connection
@@ -27,7 +56,6 @@ class Main {
 	
 	// 테이블 생성
 	def createDatabaseStructure(connection) {
-		
 		
 		def statement = connection.createStatement()
 		def sqlUsers = """		

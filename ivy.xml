@@ -26,6 +26,6 @@
 	</info>
 	<dependencies>
 		<dependency org="com.h2database" name="h2" rev="1.4.194"/>
-
+		<dependency org="io.vertx" name="vertx-core" rev="3.4.1"/>
 	</dependencies>
 </ivy-module>
